@@ -63,12 +63,13 @@ def get_total_jobs(args):
 
 
 def get_job_estimate(args):
-    console = bareos.bsock.DirectorConsole(
+    console = bareos.bsock.DirectorConsole( 
         address=host, port=port, name=user, password=password
     )
     # console.send("estimate job={}".format(args.job))
     estimate = console.call('estimate job="{}"'.format(args.job))
-    m = re.search("bytes=([0-9,]+)", re.sub(",", "", estimate))
+    estimate_str = estimate.decode('utf-8')
+    m = re.search("bytes=([0-9,]+)", re.sub(",", "", estimate_str))
     print((int(m.group(1))))
 
 
