@@ -67,6 +67,16 @@ zabbix_export:
           lifetime: 30d
           enabled_lifetime_type: DISABLE_NEVER
           item_prototypes:
+            - uuid: f369f3cc3ab142e3a523ec475590bb69
+              name: 'Job {#NAME} Backup Duration'
+              key: 'bareos.job[backup_duration,"{#NAME}"]'
+              delay: 30m
+              history: 90d
+              trends: '0'
+              units: s
+              tags:
+                - tag: Application
+                  value: 'Bareos :: Jobs'
             - uuid: 5a582866600541cdb7d590e183aa4e19
               name: 'Job {#NAME} estimate size'
               key: 'bareos.job[get_job_estimate,"{#NAME}"]'
@@ -82,6 +92,17 @@ zabbix_export:
               delay: 30m
               history: 90d
               value_type: TEXT
+              tags:
+                - tag: Application
+                  value: 'Bareos :: Jobs'
+            - uuid: d8e5d5c576ad4ef187fdd8d4fbdf348e
+              name: 'Job {#NAME} errors'
+              key: 'bareos.job[last_errors,"{#NAME}"]'
+              delay: 30m
+              history: 90d
+              trends: '0'
+              valuemap:
+                name: 'Bareos job status'
               tags:
                 - tag: Application
                   value: 'Bareos :: Jobs'
