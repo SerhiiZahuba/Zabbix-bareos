@@ -76,6 +76,26 @@ zabbix_export:
               tags:
                 - tag: Application
                   value: 'Bareos :: Jobs'
+            - uuid: 2b6b8560ae014883bd977a8aa686aa76
+              name: 'Job {#NAME} Backup Level'
+              key: 'bareos.job[last_backup_level,"{#NAME}"]'
+              delay: 30m
+              history: 90d
+              value_type: TEXT
+              tags:
+                - tag: Application
+                  value: 'Bareos :: Jobs'
+            - uuid: 945062bea23b4366a91a5d8e53977518
+              name: 'Job {#NAME} count files'
+              key: 'bareos.job[last_files,"{#NAME}"]'
+              delay: 30m
+              history: 90d
+              value_type: CHAR
+              valuemap:
+                name: 'Bareos job status'
+              tags:
+                - tag: Application
+                  value: 'Bareos :: Jobs'
             - uuid: 15a28f5a130545ca98353ea5cc9a12cf
               name: 'Job {#NAME} latest size'
               key: 'bareos.job[last_size,"{#NAME}"]'
@@ -98,7 +118,7 @@ zabbix_export:
                   value: 'Bareos :: Jobs'
               trigger_prototypes:
                 - uuid: 7c21a3586bb542558efb2d4be7ccc873
-                  expression: 'find(/Template Bareos/bareos.job[last_status,"{#NAME}"],#1,"regexp","^[WRTCt]$")=0'
+                  expression: 'find(/Template Bareos/bareos.job[last_status,"{#NAME}"],#1,"regexp","^[WRTCt]?$")=0'
                   name: 'Last job {#NAME} has unusual status'
                   priority: HIGH
                   description: |

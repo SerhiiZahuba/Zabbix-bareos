@@ -80,6 +80,22 @@ def last_files(args):
     except (KeyError, IndexError):
         print("No job files information available.")
 
+def last_backup_level(args):
+    console = create_console()
+    last_job = console.call('llist job="{}" last'.format(args.job))
+    try:
+        level = last_job["jobs"][0]["level"]
+        # Перевірка рівня резервного копіювання
+        if level == "F":
+            print("Full")
+        elif level == "D":
+            print("Diff")
+        else:
+            print(level)
+    except (KeyError, IndexError):
+        print("No backup level information available.")
+
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -88,6 +104,10 @@ if __name__ == "__main__":
     last_status_parser = subparsers.add_parser("last_status")
     last_status_parser.add_argument("job")
     last_status_parser.set_defaults(func=last_status)
+
+    last_backup_level_parser = subparsers.add_parser("last_backup_level")
+    last_backup_level_parser.add_argument("job")
+    last_backup_level_parser.set_defaults(func=last_backup_level)
 
     last_files_parser = subparsers.add_parser("last_files")
     last_files_parser.add_argument("job")
