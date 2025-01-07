@@ -72,6 +72,14 @@ def get_job_estimate(args):
     m = re.search("bytes=([0-9,]+)", re.sub(",", "", estimate_str))
     print((int(m.group(1))))
 
+def last_files(args):
+    console = create_console()
+    last_job = console.call('llist job="{}" last'.format(args.job))
+    try:
+        print((last_job["jobs"][0]["jobfiles"]))
+    except (KeyError, IndexError):
+        print("No job files information available.")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -80,6 +88,10 @@ if __name__ == "__main__":
     last_status_parser = subparsers.add_parser("last_status")
     last_status_parser.add_argument("job")
     last_status_parser.set_defaults(func=last_status)
+
+    last_files_parser = subparsers.add_parser("last_files")
+    last_files_parser.add_argument("job")
+    last_files_parser.set_defaults(func=last_files)
 
     last_size_parser = subparsers.add_parser("last_size")
     last_size_parser.add_argument("job")
