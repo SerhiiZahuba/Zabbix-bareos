@@ -107,7 +107,7 @@ def last_errors(args):
     except (KeyError, IndexError):
         print("No error information available.")
 
-from datetime import datetime
+#from datetime import datetime
 
 def backup_duration(args):
     console = create_console()
@@ -118,8 +118,8 @@ def backup_duration(args):
         end_time = last_job["jobs"][0]["endtime"]
 
         # Перетворення рядків у datetime-об'єкти
-        start = datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
-        end = datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
+        start = datetime.datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
+        end = datetime.datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
 
         # Обчислення тривалості у секундах
         duration_seconds = (end - start).total_seconds()
