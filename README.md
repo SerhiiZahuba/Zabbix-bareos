@@ -25,3 +25,18 @@ password: ChangeMe
 6. Put **userparameter_bareos.conf** in **zabbix_agentd.d** dir and restart agent
 7. Import template
 8. Assign template on host
+
+
+## Problems
+
+If you see a trigger in zabbix
+---
+Can't fetch data from bareos
+---
+or an error in the Bareos logs
+---
+bareos-dir: ERROR in dird/authenticate_console.cc:417 Number of console connections exceeded Maximum :20, Current: 451
+---
+You need to increase the limit of simultaneous connections to the console (by default it is 20). For this you need in  
+add this parameter to the /etc/bareos/bareos-dir.d/director/bareos-dir.conf file
+Maximum Console Connections = 200
