@@ -43,4 +43,6 @@ bareos-dir: ERROR in dird/authenticate_console.cc:417 Number of console connecti
 ```
 You need to increase the limit of simultaneous connections to the console (by default it is 20). For this you need in  
 add this parameter to the /etc/bareos/bareos-dir.d/director/bareos-dir.conf file
+```
 Maximum Console Connections = 200
+```
