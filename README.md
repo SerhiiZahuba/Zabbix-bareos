@@ -30,13 +30,17 @@ password: ChangeMe
 ## Problems
 
 If you see a trigger in zabbix
+```
 ---
 Can't fetch data from bareos
 ---
+```
 or an error in the Bareos logs
+```
 ---
 bareos-dir: ERROR in dird/authenticate_console.cc:417 Number of console connections exceeded Maximum :20, Current: 451
 ---
+```
 You need to increase the limit of simultaneous connections to the console (by default it is 20). For this you need in  
 add this parameter to the /etc/bareos/bareos-dir.d/director/bareos-dir.conf file
 Maximum Console Connections = 200
