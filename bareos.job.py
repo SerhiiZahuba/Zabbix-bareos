@@ -69,7 +69,7 @@ def get_job_estimate(args):
     )
     # console.send("estimate job={}".format(args.job))
     estimate = console.call('estimate job="{}"'.format(args.job))
-    estimate_str = estimate.decode('utf-8')  # Декодуємо bytes у рядок
+    estimate_str = estimate.decode('utf-8')  
     m = re.search("bytes=([0-9,]+)", re.sub(",", "", estimate_str))
     print((int(m.group(1))))
 
@@ -87,7 +87,6 @@ def last_backup_level(args):
     last_job = console.call('llist job="{}" last'.format(args.job))
     try:
         level = last_job["jobs"][0]["level"]
-        # Перевірка рівня резервного копіювання
         if level == "F":
             print("Full")
         elif level == "D":
@@ -101,7 +100,6 @@ def last_errors(args):
     console = create_console()
     last_job = console.call('llist job="{}" last'.format(args.job))
     try:
-        # Отримання значення поля "joberrors"
         errors = last_job["jobs"][0]["joberrors"]
         print(errors)
     except (KeyError, IndexError):
@@ -113,21 +111,29 @@ def backup_duration(args):
     console = create_console()
     last_job = console.call('llist job="{}" last'.format(args.job))
     try:
-        # Отримання часу початку та завершення
         start_time = last_job["jobs"][0]["starttime"]
         end_time = last_job["jobs"][0]["endtime"]
 
-        # Перетворення рядків у datetime-об'єкти
         start = datetime.datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
         end = datetime.datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
 
-        # Обчислення тривалості у секундах
         duration_seconds = (end - start).total_seconds()
 
-        # Виведення тривалості
-        print(int(duration_seconds))  # Виведення цілим числом
+        print(int(duration_seconds))  
     except (KeyError, IndexError):
         print("No time information available.")
+
+def get_waiting_jobs(args):
+    console = create_console()
+    query = (
+        '.sql query="SELECT COUNT(JobId) AS waiting_jobs '
+        'FROM Job WHERE JobStatus IN (\'C\');"'
+    )
+    result = console.call(query)
+    try:
+        print(result["query"][0]["waiting_jobs"])
+    except (KeyError, IndexError):
+        print("0")
 
 
 if __name__ == "__main__":
@@ -169,6 +175,12 @@ if __name__ == "__main__":
     get_job_estimate_parser = subparsers.add_parser("get_job_estimate")
     get_job_estimate_parser.add_argument("job")
     get_job_estimate_parser.set_defaults(func=get_job_estimate)
+
+    get_waiting_jobs_parser = subparsers.add_parser("get_waiting_jobs")
+    get_waiting_jobs_parser.add_argument("null", nargs="?")
+    get_waiting_jobs_parser.set_defaults(func=get_waiting_jobs)
+
+
 
     args = parser.parse_args()
     try:
